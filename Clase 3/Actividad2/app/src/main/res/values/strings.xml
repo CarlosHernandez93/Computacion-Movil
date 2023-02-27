@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Actividad 2</string>
+    <string name="hint_textInput">Escribe un texto...</string>
+</resources>
