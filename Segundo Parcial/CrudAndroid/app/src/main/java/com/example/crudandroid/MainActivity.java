@@ -1,17 +1,16 @@
 package com.example.crudandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-
 import com.example.crudandroid.model.Empleado;
 import com.example.crudandroid.sinterface.CrudEmpleadoInterface;
 import com.google.gson.Gson;
-
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -22,51 +21,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     CrudEmpleadoInterface crudempleado;
-    List<Empleado> listEmpleado;
+
     EditText textId;
     EditText textNombre;
     EditText textPassword;
     EditText textEmail;
 
-
+    String URL ="http://172.16.160.86:8081/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
-    public void getAll(View view){
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.50:8081/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        crudempleado = retrofit.create(CrudEmpleadoInterface.class);
-        Call<List<Empleado>> call = crudempleado.getAll();
-
-        call.enqueue(new Callback<List<Empleado>>() {
-            @Override
-            public void onResponse(Call<List<Empleado>> call, Response<List<Empleado>> response) {
-                if(!response.isSuccessful()){
-                    System.out.println(response.message());
-                    return;
-                }
-                listEmpleado = response.body();
-                //listEmpleado.forEach(p-> System.out.println(p.toString()));
-                listEmpleado.forEach(p-> Log.i("Empleado: ",p.toString()));
-            }
-
-            @Override
-            public void onFailure(Call<List<Empleado>> call, Throwable t) {
-                //System.out.println(t.getMessage());
-                Log.e("Throw error: ",t.getMessage());
-            }
-        });
+    public void nextActivity(View view){
+        Intent intent = new Intent(this, ViewAllUsers.class);
+        startActivity(intent);
     }
 
     public void createEmployee(View view){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.50:8081/")
+                .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         crudempleado = retrofit.create(CrudEmpleadoInterface.class);
@@ -106,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteEmployee(View view){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.50:8081/")
+                .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         crudempleado = retrofit.create(CrudEmpleadoInterface.class);
@@ -133,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchEmployee(View view){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.50:8081/")
+                .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         crudempleado = retrofit.create(CrudEmpleadoInterface.class);
@@ -163,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateEmployee(View view){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.50:8081/")
+                .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         crudempleado = retrofit.create(CrudEmpleadoInterface.class);
